@@ -15,7 +15,7 @@ bower install backbone.input.scroll
 
 This plugin will extend either the app-specific APP.View, if it is defined, or the Default Backbone.View as a fallback. 
 
-No 
+No further setup is required. All views extending the default view 
 
 ## Options 
 
