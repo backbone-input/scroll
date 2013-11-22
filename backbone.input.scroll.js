@@ -13,18 +13,25 @@
 
 	// support for Backbone APP() view if available...
 	var View = ( typeof APP != "undefined" && typeof APP.View != "undefined") ? APP.View : Backbone.View;
+	// save existing options/params
+	var options = (View.prototype.options instanceof Object) ? View.prototype.options : {};
+	var params = (View.prototype.params instanceof Backbone.Model) ? View.prototype.params : new Backbone.Model();
+	// defaults
+	params.set({
+		scroll: {
+				top : 0,
+				height : 0,
+				max : 0
+			}
+	});
 
 	var Scroll = View.extend({
 
-		options : _.extend({}, View.prototype.options, {
+		options : _.extend({}, options, {
 			scrolling : false
 		}),
 
-		pos : new Backbone.Model({
-			top : 0,
-			height : 0,
-			max : 0
-		}),
+		params: params,
 
 		events: {
 
@@ -49,11 +56,13 @@
 			, scrollHeight = $(document).height()
 			, maxScroll = scrollHeight - $(this.el).height()
 
-			this.pos.set({
-				top : scrollTop,
-				height : scrollHeight,
-				middle : scrollTop + ($(window).height()/2),
-				max : maxScroll
+			this.params.set({
+				scroll: {
+					top : scrollTop,
+					height : scrollHeight,
+					middle : scrollTop + ($(window).height()/2),
+					max : maxScroll
+				}
 			});
 			// update views
 			this.trigger("scroll");
