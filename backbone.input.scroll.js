@@ -28,7 +28,7 @@
 	var Scroll = View.extend({
 
 		options : _.extend({}, options, {
-			scrolling : false
+			monitorScroll: false
 		}),
 
 		params: params,
@@ -41,7 +41,7 @@
 
 			_.bindAll(this, "_scroll");
 
-			if( this.options.scrolling ){
+			if( this.options.monitorScroll ){
 				$(window).scroll(this._scroll);
 				//$(window).bind("touchmove", this._scroll); // is this overkill?
 			}
