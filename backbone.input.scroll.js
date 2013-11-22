@@ -87,11 +87,13 @@
 	} else {
 			// Register as a named AMD module, used in Require.js
 			if ( typeof define === "function" && define.amd ) {
-					define( "backbone.input.scroll", [], function () { return Slideshow; } );
+					define( "backbone.input.scroll", [], function () { return Scroll; } );
 			}
 	}
 	// If there is a window object, that at least has a document property
 	if ( typeof window === "object" && typeof window.document === "object" ) {
+			// replacing default view
+			Backbone.View = View;
 			window.Backbone = Backbone;
 			// update APP namespace
 			if( typeof APP != "undefined" && (_.isUndefined( APP.Input ) || _.isUndefined( APP.Input.Scroll ) ) ){
