@@ -1,68 +1,54 @@
-/*
- * Backbone Input: Scroll
- * - monitor scroll in your views
- * 
- * Created by: Makis Tracend (@tracend)
- * (c) Makesites.org
- * 
- * Released under the MIT License
- * 
+/* Backbone Input: Scroll
+ * Source: https://github.com/backbone-input/scroll
+ *
+ * Created by Makis Tracend (@tracend)
+ * (c) by [Makesites.org](http://makesites.org)
+ *
+ * Released under the [MIT license](http://makesites.org/licenses/MIT)
  */
-(function (factory) {
 
-    "use strict";
+(function($, _, Backbone, APP) {
 
-    if (typeof define === 'function' && define.amd) {
-        // AMD. Register as an anonymous module.
-        define(['backbone', 'underscore', 'jquery'], factory);
-    } else {
-        // Browser globals
-        factory(Backbone, _, $);
-    }
-}(function (Backbone, _, $) {
+	"use strict";
 
-    "use strict";
-	
-	// fallbacks
-	if( _.isUndefined( Backbone.Input ) ) Backbone.Input = {};
-	
-	// conditioning the existance of the Backbone APP()
-	var View = ( APP ) ? APP.View : Backbone.View;
-	
-    _.extend(View.prototype, {
-        options : _.extend({}, View.prototype.options, {
-            scrolling : false
-        }), 
-		
-        pos : new Backbone.Model({
+	// support for Backbone APP() view if available...
+	var View = ( typeof APP != "undefined" && typeof APP.View != "undefined") ? APP.View : Backbone.View;
+
+	var Scroll = View.extend({
+
+		options : _.extend({}, View.prototype.options, {
+			scrolling : false
+		}),
+
+		pos : new Backbone.Model({
 			top : 0,
 			height : 0,
 			max : 0
-		}), 
-		
-        events: {
-            
-        }, 
-		
+		}),
+
+		events: {
+
+		},
+
 		initialize : function(){
-			
+
 			_.bindAll(this, "_scroll");
-			
+
 			if( this.options.scrolling ){
 				$(window).scroll(this._scroll);
 				//$(window).bind("touchmove", this._scroll); // is this overkill?
 			}
 			return View.prototype.initialize.apply(this, arguments);
-		}, 
-		
+		},
+
 		_scroll : function( e ){
-			
+
 			// Firefox/IE scroll the html tag instead :P
 			// could also use: $(document).scrollTop() //returns scroll position from top of document
 			var scrollTop = $("body").scrollTop() ||$("html").scrollTop() || 0
-          	, scrollHeight = $(document).height()
-          	, maxScroll = scrollHeight - $(this.el).height()
-			
+			, scrollHeight = $(document).height()
+			, maxScroll = scrollHeight - $(this.el).height()
+
 			this.pos.set({
 				top : scrollTop,
 				height : scrollHeight,
@@ -76,9 +62,34 @@
 			//console.log("middle", this.pos.middle);
 			//console.log("maxScroll", maxScroll);
 		}
-    	
-    
-    });
 
-    return Backbone;
-}));
+
+	});
+
+
+	// fallbacks
+	if( _.isUndefined( Backbone.Input ) ) Backbone.Input = {};
+	Backbone.Input.Scroll = Scroll;
+
+	// Support module loaders
+	if ( typeof module === "object" && module && typeof module.exports === "object" ) {
+			// Expose as module.exports in loaders that implement CommonJS module pattern.
+			module.exports = Scroll;
+	} else {
+			// Register as a named AMD module, used in Require.js
+			if ( typeof define === "function" && define.amd ) {
+					define( "backbone.input.scroll", [], function () { return Slideshow; } );
+			}
+	}
+	// If there is a window object, that at least has a document property
+	if ( typeof window === "object" && typeof window.document === "object" ) {
+			window.Backbone = Backbone;
+			// update APP namespace
+			if( typeof APP != "undefined" && (_.isUndefined( APP.Input ) || _.isUndefined( APP.Input.Scroll ) ) ){
+					APP.Input = APP.Input || {};
+					APP.Input.Scroll = Backbone.Input.Scroll;
+					window.APP = APP;
+			}
+	}
+
+})(this.jQuery, this._, this.Backbone, this.APP);
