@@ -12,7 +12,8 @@
 	"use strict";
 
 	// support for Backbone APP() view if available...
-	var View = ( typeof APP != "undefined" && typeof APP.View != "undefined") ? APP.View : Backbone.View;
+	var isAPP = ( typeof APP !== "undefined" && typeof APP.View !== "undefined" );
+	var View = ( isAPP ) ? APP.View : Backbone.View;
 	// save existing options/params
 	var options = (View.prototype.options instanceof Object) ? View.prototype.options : {};
 	var params = (View.prototype.params instanceof Backbone.Model) ? View.prototype.params : new Backbone.Model();
@@ -92,14 +93,18 @@
 	}
 	// If there is a window object, that at least has a document property
 	if ( typeof window === "object" && typeof window.document === "object" ) {
-			// replacing default view
-			Backbone.View = View;
-			window.Backbone = Backbone;
-			// update APP namespace
-			if( typeof APP != "undefined" && (_.isUndefined( APP.Input ) || _.isUndefined( APP.Input.Scroll ) ) ){
-					APP.Input = APP.Input || {};
-					APP.Input.Scroll = Backbone.Input.Scroll;
-					window.APP = APP;
+			if( isAPP ){
+				// update APP namespace
+				APP.Input = APP.Input || {};
+				APP.Input.Scroll = Backbone.Input.Scroll;
+				// update APP view
+				APP.View = Scroll;
+				window.APP = APP;
+			} else {
+				// replacing default view
+				Backbone.View = Scroll;
+				window.Backbone = Backbone;
+				//return Backbone;
 			}
 	}
 
