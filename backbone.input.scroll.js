@@ -43,7 +43,12 @@
 			_.bindAll(this, "_scroll");
 
 			if( this.options.monitorScroll ){
-				$(window).scroll(this._scroll);
+				// support common scroll if available
+				if( window.c != "undefined" && window.c.scroll != "undefined" ){
+					window.c.scroll(this._scroll);
+				} else {
+					$(window).scroll(this._scroll);
+				}
 				//$(window).bind("touchmove", this._scroll); // is this overkill?
 			}
 			return View.prototype.initialize.apply(this, arguments);
@@ -66,7 +71,11 @@
 				}
 			});
 			// update views
-			this.trigger("scroll");
+			// this conflicts with Backbone.State
+			//this.trigger("scroll");
+			// convention:
+			if(typeof this.onScroll == "function") this.onScroll( e );
+			// debug:
 			//console.log("scrollTop", scrollTop);
 			//console.log("scrollHeight", scrollHeight);
 			//console.log("middle", this.pos.middle);
