@@ -44,7 +44,7 @@
 
 			if( this.options.monitorScroll ){
 				// support common scroll if available
-				if( window.c != "undefined" && window.c.scroll != "undefined" ){
+				if( typeof window.c != "undefined" && typeof window.c.scroll != "undefined" ){
 					window.c.scroll(this._scroll);
 				} else {
 					$(window).scroll(this._scroll);
