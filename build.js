@@ -24,7 +24,7 @@ _handlebars.registerHelper('license', function(items){
 concat({
 	src : [
 		'lib/params.js',
-		'lib/helpers.js'
+		'lib/view.js'
 	],
 	dest : 'build/backbone.input.scroll.js'
 });

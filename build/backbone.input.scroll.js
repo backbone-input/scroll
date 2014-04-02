@@ -1,10 +1,15 @@
-/* Backbone Input: Scroll
- * Source: https://github.com/backbone-input/scroll
+/**
+ * @name backbone.input.scroll
+ * Lightweight event bindings for scrolling in Backbone views
  *
- * Created by Makis Tracend (@tracend)
- * (c) by [Makesites.org](http://makesites.org)
+ * Version: 0.2.0 (Wed, 02 Apr 2014 02:29:24 GMT)
+ * Homepage: https://github.com/backbone-input/scroll
  *
- * Released under the [MIT license](http://makesites.org/licenses/MIT)
+ * @author makesites
+ * Initiated by: Makis Tracend (@tracend)
+ *
+ * @cc_on Copyright © Makesites.org
+ * @license MIT license
  */
 
 (function($, _, Backbone, APP) {
@@ -14,8 +19,9 @@
 	// support for Backbone APP() view if available...
 	var isAPP = ( typeof APP !== "undefined" && typeof APP.View !== "undefined" );
 	var View = ( isAPP ) ? APP.View : Backbone.View;
-	// save existing options/params
-	var options = (View.prototype.options instanceof Object) ? View.prototype.options : {};
+
+
+
 	var params = (View.prototype.params instanceof Backbone.Model) ? View.prototype.params : new Backbone.Model();
 	// defaults
 	params.set({
@@ -25,6 +31,9 @@
 				max : 0
 			}
 	});
+
+	// save existing options/params
+	var options = (View.prototype.options instanceof Object) ? View.prototype.options : {};
 
 	var Scroll = View.extend({
 
@@ -84,6 +93,7 @@
 
 
 	});
+
 
 
 	// fallbacks
