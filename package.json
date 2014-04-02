@@ -1,6 +1,6 @@
 {
 	"name": "backbone.input.scroll",
-	"version": "0.2.0",
+	"version": "0.3.0",
 	"author": "makesites",
 	"description": "Lightweight event bindings for scrolling in Backbone views",
 	"homepage": "https://github.com/backbone-input/scroll",
